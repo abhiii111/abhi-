@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth" data-theme="lime-dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abhi Garg - Creative Graphic Designer & Digital Artist</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==============================================
+         * CUSTOM DESIGN SYSTEM & NEW THEME PALETTES
+         * ============================================== */
+        :root {
+            --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --ease-in-out-cubic: cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        [data-theme='lime-dark'] {
+            --bg-primary: #050505;
+            --bg-secondary: #101010;
+            --bg-card: hsla(0, 0%, 7%, 0.7);
+            --bg-glass: rgba(16, 16, 16, 0.5);
+            --text-primary: #F0F0F0;
+            --text-secondary: #A0A0A0;
+            --accent-primary: #32CD32; /* Lime Green */
+            --accent-secondary: #98FB98; /* Pale Green */
+            --glitch-color-1: #32CD32;
+            --glitch-color-2: #ff00c1;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --dot-color: rgba(255, 255, 255, 0.05);
+            --shadow-color: rgba(50, 205, 50, 0.15);
+        }
+
+        [data-theme='azure-dark'] {
+            --bg-primary: #020817;
+            --bg-secondary: #0f172a;
+            --bg-card: hsla(222, 44%, 13%, 0.7);
+            --bg-glass: rgba(15, 23, 42, 0.5);
+            --text-primary: #e2e8f0;
+            --text-secondary: #94a3b8;
+            --accent-primary: #007FFF; /* Azure Blue */
+            --accent-secondary: #3b82f6;
+            --glitch-color-1: #007FFF;
+            --glitch-color-2: #f43f5e;
+            --border-color: rgba(148, 163, 184, 0.2);
+            --dot-color: rgba(148, 163, 184, 0.07);
+            --shadow-color: rgba(0, 127, 255, 0.15);
+        }
+        
+        [data-theme='gold-dark'] {
+            --bg-primary: #120c04;
+            --bg-secondary: #1c160c;
+            --bg-card: hsla(30, 25%, 10%, 0.7);
+            --bg-glass: rgba(28, 22, 12, 0.5);
+            --text-primary: #f3eade;
+            --text-secondary: #b8a692;
+            --accent-primary: #D4AF37; /* Old Gold */
+            --accent-secondary: #FFD700; /* Gold */
+            --glitch-color-1: #D4AF37;
+            --glitch-color-2: #8a2be2;
+            --border-color: rgba(212, 175, 55, 0.2);
+            --dot-color: rgba(212, 175, 55, 0.1);
+            --shadow-color: rgba(212, 175, 55, 0.15);
+        }
+        
+        [data-theme='charcoal'] {
+            --bg-primary: #1F1F1F;
+            --bg-secondary: #2A2A2A;
+            --bg-card: hsla(0, 0%, 20%, 0.7);
+            --bg-glass: rgba(42, 42, 42, 0.5);
+            --text-primary: #FFFFFF;
+            --text-secondary: #BDBDBD;
+            --accent-primary: #FFFFFF; 
+            --accent-secondary: #E0E0E0;
+            --glitch-color-1: #00f7ff;
+            --glitch-color-2: #ff00c1;
+            --border-color: rgba(255, 255, 255, 0.15);
+            --dot-color: rgba(255, 255, 255, 0.07);
+            --shadow-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Bungee', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.5s var(--ease-in-out-cubic), color 0.5s var(--ease-in-out-cubic);
+            background-image: radial-gradient(var(--dot-color) 1px, transparent 1px);
+            background-size: 20px 50px;
+        }
+
+        h1, h2, h3, .font-display { font-family: 'Bungee', sans-serif; }
+        
+        /* Dynamic SVG Logo Color */
+        .logo-container svg path {
+            fill: var(--accent-primary);
+            transition: fill 0.5s var(--ease-in-out-cubic);
+        }
+
+        /* Preloader */
+        #preloader { position: fixed; inset: 0; background-color: var(--bg-primary); z-index: 99999; display: flex; align-items: center; justify-content: center; transition: opacity 0.7s ease-in-out; }
+        #preloader.loaded { opacity: 0; pointer-events: none; }
+        .loader { width: 48px; height: 48px; border: 3px solid var(--accent-primary); border-radius: 50%; display: inline-block; position: relative; box-sizing: border-box; animation: rotation 1s linear infinite; }
+        .loader::after { content: ''; box-sizing: border-box; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; border-radius: 50%; border: 3px solid; border-color: var(--accent-secondary) transparent; }
+        @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Interactive Aurora */
+        #aurora-background { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; background: radial-gradient(400px circle at var(--mouse-x) var(--mouse-y), var(--accent-primary), transparent 40%); mix-blend-mode: screen; opacity: 0; filter: blur(40px); transition: opacity 1.5s; }
+
+        /* Custom Cursor */
+        #custom-cursor { position: fixed; width: 32px; height: 32px; border: 1px solid var(--accent-primary); border-radius: 50%; pointer-events: none; transform: translate(-50%, -50%); transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease, border-color 0.3s ease; z-index: 9999; display: none; }
+        #custom-cursor.hover { width: 64px; height: 64px; background-color: var(--shadow-color); border-color: var(--accent-secondary); }
+        #custom-cursor.text-hover::after { content: 'View'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--text-primary); font-size: 12px; }
+        .magnetic-element { transition: transform 0.3s var(--ease-out-quad); }
+        
+        /* Header & Nav */
+        .glass-header { background-color: var(--bg-glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-color); transition: background-color 0.5s var(--ease-in-out-cubic), border-color 0.5s var(--ease-in-out-cubic), padding 0.3s ease; }
+        #mobile-menu { transition: transform 0.4s var(--ease-in-out-cubic); }
+        .nav-link { position: relative; transition: color 0.3s; }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -6px; left: 50%; transform: translateX(-50%); background-color: var(--accent-primary); transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1); }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+        /* Universal Text Scrambler Effect */
+        .scramble-text {
+             position: relative;
+             overflow: hidden;
+        }
+
+        /* Scroll Reveal Animation */
+        .scroll-reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .scroll-reveal.revealed { opacity: 1; transform: translateY(0); }
+
+        /* Project Cards -- MODIFIED */
+        .project-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, background-color 0.5s var(--ease-in-out-cubic), border-color 0.5s var(--ease-in-out-cubic);
+        }
+        .project-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px -10px var(--shadow-color);
+            border-color: var(--accent-primary);
+        }
+        .project-card-inner {
+            /* This class is no longer needed for 3D effects but kept for structure */
+        }
+
+        /* Testimonials Slider */
+        .testimonial-slider-container { -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent); }
+        .testimonial-track { transition: transform 0.5s var(--ease-in-out-cubic); }
+        
+        /* Contact Form */
+        .form-input { background-color: var(--bg-secondary); border: 1px solid var(--border-color); color: var(--text-primary); transition: border-color 0.3s, box-shadow 0.3s; }
+        .form-input:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 2px var(--shadow-color); outline: none; }
+        .form-feedback { transition: opacity 0.3s, transform 0.3s; }
+        
+        /* Theme Cycle Button */
+        #theme-cycler-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            transition: transform 0.3s var(--ease-in-out-cubic), color 0.3s ease;
+        }
+        #theme-cycler-button:hover {
+            transform: scale(1.1) rotate(15deg);
+        }
+
+        /* Back to Top Button */
+        #back-to-top { position: fixed; bottom: 80px; right: 20px; background-color: var(--bg-card); color: var(--text-secondary); border: 1px solid var(--border-color); backdrop-filter: blur(5px); opacity: 0; pointer-events: none; transform: translateY(20px); transition: opacity 0.3s, transform 0.3s, color 0.3s; z-index: 99; }
+        #back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        #back-to-top:hover { color: var(--text-primary); }
+
+        /* CTA buttons styling */
+        .cta-button {
+             background-color: var(--accent-primary);
+             color: var(--bg-primary);
+             transition: filter 0.3s, background-color 0.5s, color 0.5s;
+        }
+        .cta-button:hover {
+            filter: brightness(1.1);
+        }
+        .cta-shadow {
+            box-shadow: 0 4px 14px 0 var(--shadow-color);
+        }
+        .cta-button:disabled {
+            cursor: not-allowed;
+            filter: brightness(0.7);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-[var(--shadow-color)]">
+    
+    <div id="preloader"><span class="loader"></span></div>
+
+    <div id="aurora-background"></div>
+    <div id="custom-cursor"></div>
+
+    <header id="main-header" class="glass-header fixed top-0 left-0 right-0 z-50 py-3">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-between">
+                <a href="#home" class="flex items-center gap-3 logo-container nav-link">
+                    <svg width="50" height="50" viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg">
+                        <g transform="matrix(1.25, 0, 0, 1.25, 0, 0)">
+                            <path d="M 495.87462,594.59316 L 548.85693,458.58864 L 609.6984,539.77092 L 588.34169,594.59316 L 558.57642,671.00002 L 466.10935,671.00002 L 379.82265,671.00002 L 287.35558,671.00002 L 317.12085,594.59316 L 431.24055,301.65019 L 445.49625,265.0561 L 479.28344,178.32507 L 540.12491,259.50735 L 657.74129,416.4458 L 791.25253,594.59316 L 848.51509,671.00002 L 749.72797,671.00002 L 692.46541,594.59316 L 623.95411,503.17683 L 563.11264,421.99455 L 506.33773,346.23838 L 492.08203,382.83247 L 409.58793,594.59316 z" />
+                        </g>
+                    </svg>
+                    <div>
+                        <span class="block text-lg font-bold font-display tracking-tight text-text-primary">ABHI GARG</span>
+                        <span class="block text-xs text-text-secondary -mt-1">Your pixel perfectionist</span>
+                    </div>
+                </a>
+                <nav class="hidden md:flex items-center space-x-10">
+                    <a href="#about" class="nav-link text-text-secondary hover:text-text-primary scramble-text">About</a>
+                    <a href="#skills" class="nav-link text-text-secondary hover:text-text-primary scramble-text">Skills</a>
+                    <a href="#work" class="nav-link text-text-secondary hover:text-text-primary scramble-text">Work</a>
+                    <a href="#testimonials" class="nav-link text-text-secondary hover:text-text-primary scramble-text">Testimonials</a>
+                    <a href="#contact" class="nav-link text-text-secondary hover:text-text-primary scramble-text">Contact</a>
+                </nav>
+                <div class="flex items-center gap-4">
+                     <a href="#contact" class="hidden md:inline-block magnetic-element cta-button cta-shadow font-bold py-2 px-5 rounded-lg transition-all duration-300 transform hover:scale-105">
+                         Let's Talk
+                     </a>
+                    <button id="mobile-menu-button" class="md:hidden text-text-secondary focus:outline-none">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div id="mobile-menu-container" class="md:hidden fixed inset-0 z-40 pointer-events-none">
+         <div id="mobile-menu-overlay" class="absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300"></div>
+         <div id="mobile-menu" class="fixed top-0 right-0 h-full w-64 bg-bg-secondary shadow-lg p-8 transform translate-x-full pointer-events-auto">
+             <a href="#home" class="block py-3 text-text-secondary hover:text-[var(--accent-primary)]">Home</a>
+             <a href="#about" class="block py-3 text-text-secondary hover:text-[var(--accent-primary)]">About</a>
+             <a href="#skills" class="block py-3 text-text-secondary hover:text-[var(--accent-primary)]">Skills</a>
+             <a href="#work" class="block py-3 text-text-secondary hover:text-[var(--accent-primary)]">Work</a>
+             <a href="#testimonials" class="block py-3 text-text-secondary hover:text-[var(--accent-primary)]">Testimonials</a>
+             <a href="#contact" class="block py-3 text-text-secondary hover:text-[var(--accent-primary)]">Contact</a>
+         </div>
+    </div>
+
+    <main>
+        <section id="home" class="min-h-screen relative flex items-center justify-center overflow-hidden">
+            <div class="text-center px-6 z-10">
+                <h1 class="scramble-text text-6xl md:text-8xl lg:text-9xl font-black text-text-primary leading-tight tracking-tighter" data-text="Abhi Garg">
+                    Abhi Garg
+                </h1>
+                <p class="scramble-text mt-4 text-xl md:text-2xl text-text-secondary max-w-3xl mx-auto" data-text="Creative Graphic Designer & Digital Artist shaping ideas into stunning visual realities.">
+                    Creative Graphic Designer & Digital Artist shaping ideas into stunning visual realities.
+                </p>
+                <div class="mt-10 flex flex-col sm:flex-row justify-center items-center gap-4">
+                    <a href="#work" class="cta-button cta-shadow font-bold py-4 px-10 rounded-full text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto scramble-text">
+                        Explore My Work
+                    </a>
+                    <a href="/abhi-garg-resume.pdf" download class="bg-gray-700/50 hover:bg-gray-700 border border-gray-600 text-white font-bold py-4 px-10 rounded-full text-lg transition-all duration-300 transform hover:scale-105 w-full sm:w-auto scramble-text">
+                        Download CV
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-24 lg:py-40">
+            <div class="container mx-auto px-6">
+                <div class="grid lg:grid-cols-2 gap-16 items-center">
+                    <div class="scroll-reveal flex items-center justify-center p-8 lg:p-0">
+                        <div class="relative w-full max-w-xs md:max-w-sm">
+                            <div class="absolute inset-0 bg-[var(--accent-primary)]/10 rounded-full blur-3xl"></div>
+                            <svg viewBox="0 0 1080 1080" xmlns="http://www.w3.org/2000/svg" class="relative text-[var(--accent-primary)]">
+                                <g transform="matrix(1, 0, 0, 1, 0, 0)">
+                                    <path fill="currentColor" d="M 495.87462,594.59316 L 548.85693,458.58864 L 609.6984,539.77092 L 588.34169,594.59316 L 558.57642,671.00002 L 466.10935,671.00002 L 379.82265,671.00002 L 287.35558,671.00002 L 317.12085,594.59316 L 431.24055,301.65019 L 445.49625,265.0561 L 479.28344,178.32507 L 540.12491,259.50735 L 657.74129,416.4458 L 791.25253,594.59316 L 848.51509,671.00002 L 749.72797,671.00002 L 692.46541,594.59316 L 623.95411,503.17683 L 563.11264,421.99455 L 506.33773,346.23838 L 492.08203,382.83247 L 409.58793,594.59316 z" />
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="scroll-reveal" style="transition-delay: 200ms;">
+                        <h2 class="text-4xl lg:text-5xl font-bold text-text-primary mb-6 scramble-text">A Fusion of Art and Logic.</h2>
+                        <p class="text-lg text-text-secondary mb-6 scramble-text">
+                            I am Abhi Garg, a graphic designer who lives at the intersection of creativity and strategy. For me, design is a visual language that solves problems, evokes emotion, and builds lasting connections. My process is a meticulous blend of artistic intuition and data-driven insights, ensuring every pixel serves a purpose.
+                        </p>
+                        <p class="text-lg text-text-secondary mb-8 scramble-text">
+                            From crafting pixel-perfect brand identities to designing intuitive user interfaces, I am dedicated to producing work that is not only beautiful but also effective. I thrive on collaboration and am always pushing the boundaries of my craft to deliver exceptional results.
+                        </p>
+                        <a href="#contact" class="text-[var(--accent-primary)] hover:text-white font-semibold text-lg group scramble-text">
+                            Let's create something amazing together <span class="inline-block transition-transform group-hover:translate-x-2">&rarr;</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="py-24 lg:py-40 bg-bg-secondary">
+             <div class="container mx-auto px-6">
+                 <div class="text-center mb-16">
+                     <h2 class="text-4xl lg:text-5xl font-bold text-text-primary scroll-reveal scramble-text">My Creative Toolkit</h2>
+                     <p class="text-lg text-text-secondary mt-4 max-w-2xl mx-auto scroll-reveal scramble-text" style="transition-delay: 150ms;">I wield a versatile set of skills to bring ideas to life, from concept to execution.</p>
+                 </div>
+                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
+                     <div class="border border-border-color p-8 rounded-2xl scroll-reveal bg-bg-primary/50">
+                         <h3 class="text-2xl font-bold text-[var(--accent-primary)] mb-4 scramble-text">Design</h3>
+                         <ul class="space-y-3 text-text-secondary">
+                             <li class="flex items-center scramble-text"><span class="w-2 h-2 bg-[var(--accent-primary)] rounded-full mr-3"></span>Branding & Identity</li>
+                             <li class="flex items-center scramble-text"><span class="w-2 h-2 bg-[var(--accent-primary)] rounded-full mr-3"></span>UI/UX Design</li>
+                             <li class="flex items-center scramble-text"><span class="w-2 h-2 bg-[var(--accent-primary)] rounded-full mr-3"></span>Digital Illustration</li>
+                             <li class="flex items-center scramble-text"><span class="w-2 h-2 bg-[var(--accent-primary)] rounded-full mr-3"></span>Typography & Layout</li>
+                             <li class="flex items-center scramble-text"><span class="w-2 h-2 bg-[var(--accent-primary)] rounded-full mr-3"></span>Print & Editorial Design</li>
+                         </ul>
+                     </div>
+                     <div class="border border-border-color p-8 rounded-2xl scroll-reveal bg-bg-primary/50" style="transition-delay: 200ms;">
+                         <h3 class="text-2xl font-bold text-[var(--accent-primary)] mb-4 scramble-text">Development</h3>
+                         <ul class="space-y-3 text-text-secondary">
+                             <li class="flex items-center scramble-text"><span class="w-2 h-2 bg-[var(--accent-primary)] rounded-full mr-3"></span>HTML5 & CSS3</li>
+                             <li class="flex items-center scramble-text"><span class="w-2 h-2 bg-[var(--accent-primary)] rounded-full mr-3"></span>JavaScript (ES6+)</li>
+                             <li class="flex items-center scramble-text"><span class="w-2 h-2 bg-[var(--accent-primary)] rounded-full mr-3"></span>Tailwind CSS</li>
+                             <li class="flex items-center scramble-text"><span class="w-2 h-2 bg-[var(--accent-primary)] rounded-full mr-3"></span>React.js Basics</li>
+                             <li class="flex items-center scramble-text"><span class="w-2 h-2 bg-[var(--accent-primary)] rounded-full mr-3"></span>Responsive Web Design</li>
+                         </ul>
+                     </div>
+                     <div class="border border-border-color p-8 rounded-2xl scroll-reveal bg-bg-primary/50" style="transition-delay: 400ms;">
+                         <h3 class="text-2xl font-bold text-[var(--accent-primary)] mb-4 scramble-text">Strategy</h3>
+                         <ul class="space-y-3 text-text-secondary">
+                             <li class="flex items-center scramble-text"><span class="w-2 h-2 bg-[var(--accent-primary)] rounded-full mr-3"></span>Design Thinking</li>
+                             <li class="flex items-center scramble-text"><span class="w-2 h-2 bg-[var(--accent-primary)] rounded-full mr-3"></span>User Research</li>
+                             <li class="flex items-center scramble-text"><span class="w-2 h-2 bg-[var(--accent-primary)] rounded-full mr-3"></span>Prototyping & Testing</li>
+                             <li class="flex items-center scramble-text"><span class="w-2 h-2 bg-[var(--accent-primary)] rounded-full mr-3"></span>Project Management</li>
+                             <li class="flex items-center scramble-text"><span class="w-2 h-2 bg-[var(--accent-primary)] rounded-full mr-3"></span>Client Collaboration</li>
+                         </ul>
+                     </div>
+                 </div>
+             </div>
+        </section>
+
+        <section id="work" class="py-24 lg:py-40">
+             <div class="container mx-auto px-6">
+                 <div class="text-center mb-16">
+                     <h2 class="text-4xl lg:text-5xl font-bold text-text-primary scroll-reveal scramble-text">Featured Work</h2>
+                     <p class="text-lg text-text-secondary mt-4 max-w-2xl mx-auto scroll-reveal scramble-text" style="transition-delay: 150ms;">A curated selection of my work that showcases my passion for design.</p>
+                 </div>
+                 <div class="grid md:grid-cols-2 gap-8 lg:gap-12">
+                      <div class="project-card rounded-2xl overflow-hidden cursor-pointer group scroll-reveal" onclick="openModal('Project Cygnus', 'https://placehold.co/800x600/101010/00A3FF?text=Cygnus', 'Project Cygnus was a complete branding and UI/UX overhaul for a next-generation fintech platform. The objective was to create an identity that felt secure, futuristic, and incredibly user-friendly. We developed a custom logomark, a comprehensive design system, and a fully-prototyped mobile application interface that prioritized clarity and ease of use.')">
+                         <div class="relative overflow-hidden p-2">
+                             <img src="https://placehold.co/800x600/101010/00A3FF?text=Cygnus" alt="Project Cygnus" class="w-full h-60 object-cover group-hover:scale-110 transition-transform duration-500 rounded-lg">
+                         </div>
+                         <div class="p-6 pt-4 project-card-inner">
+                             <h3 class="text-xl font-bold text-text-primary scramble-text">Project Cygnus</h3>
+                             <p class="text-text-secondary scramble-text">Branding & UI/UX Design</p>
+                         </div>
+                     </div>
+                     <div class="project-card rounded-2xl overflow-hidden cursor-pointer group scroll-reveal" style="transition-delay: 200ms;" onclick="openModal('Aether Apparel', 'https://placehold.co/800x600/F0F0F0/101010?text=Aether', 'Aether Apparel is a concept for a sustainable fashion brand. I designed the e-commerce website experience, focusing on a minimalist aesthetic that highlights the product photography and brand story. The project included user flow mapping, wireframing, and a high-fidelity responsive design that works seamlessly across all devices.')">
+                         <div class="relative overflow-hidden p-2">
+                             <img src="https://placehold.co/800x600/F0F0F0/101010?text=Aether" alt="Project Aether" class="w-full h-60 object-cover group-hover:scale-110 transition-transform duration-500 rounded-lg">
+                         </div>
+                         <div class="p-6 pt-4 project-card-inner">
+                             <h3 class="text-xl font-bold text-text-primary scramble-text">Aether Apparel</h3>
+                             <p class="text-text-secondary scramble-text">E-commerce Website Design</p>
+                         </div>
+                     </div>
+                     <div class="project-card rounded-2xl overflow-hidden cursor-pointer group scroll-reveal" style="transition-delay: 0ms;" onclick="openModal('Nova Digital Art', 'https://placehold.co/800x600/00A3FF/101010?text=Nova', 'Nova is a personal series of digital illustrations exploring themes of space and technology. Created using a combination of Adobe Illustrator and Photoshop, these pieces experiment with vibrant color palettes, abstract shapes, and intricate details to create surreal, imaginative worlds.')">
+                         <div class="relative overflow-hidden p-2">
+                             <img src="https://placehold.co/800x600/00A3FF/101010?text=Nova" alt="Project Nova" class="w-full h-60 object-cover group-hover:scale-110 transition-transform duration-500 rounded-lg">
+                         </div>
+                         <div class="p-6 pt-4 project-card-inner">
+                             <h3 class="text-xl font-bold text-text-primary scramble-text">Nova Digital Art</h3>
+                             <p class="text-text-secondary scramble-text">Digital Illustration Series</p>
+                         </div>
+                     </div>
+                      <div class="project-card rounded-2xl overflow-hidden cursor-pointer group scroll-reveal" style="transition-delay: 200ms;" onclick="openModal('Helios Dashboard', 'https://placehold.co/800x600/1d1d1f/f5f5f7?text=Helios', 'Helios is a data visualization dashboard UI kit designed for SaaS platforms. Built in Figma, it features a complete component library, multiple color themes, and responsive layouts. The focus was on creating a clean, powerful, and easily customizable interface for complex data analysis.')">
+                         <div class="relative overflow-hidden p-2">
+                             <img src="https://placehold.co/800x600/1d1d1f/f5f5f7?text=Helios" alt="Helios Dashboard" class="w-full h-60 object-cover group-hover:scale-110 transition-transform duration-500 rounded-lg">
+                         </div>
+                         <div class="p-6 pt-4 project-card-inner">
+                             <h3 class="text-xl font-bold text-text-primary scramble-text">Helios Dashboard</h3>
+                             <p class="text-text-secondary scramble-text">UI Kit & Data Visualization</p>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+        </section>
+
+        <section id="testimonials" class="py-24 lg:py-40 bg-bg-secondary">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl lg:text-5xl font-bold text-text-primary scroll-reveal scramble-text">What Clients Say</h2>
+                    <p class="text-lg text-text-secondary mt-4 max-w-2xl mx-auto scroll-reveal scramble-text" style="transition-delay: 150ms;">My work isn't just about pixels; it's about partnerships and results.</p>
+                </div>
+                <div class="relative scroll-reveal">
+                    <div class="testimonial-slider-container overflow-hidden">
+                        <div id="testimonial-track" class="flex">
+                            <div class="flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-4">
+                                <div class="bg-bg-primary/50 border border-border-color rounded-2xl p-8 h-full">
+                                    <p class="text-text-secondary mb-6 scramble-text">"Abhi's vision transformed our brand. The attention to detail was impeccable, and the final result exceeded all our expectations. A true professional and creative genius!"</p>
+                                    <h4 class="font-bold text-text-primary scramble-text">Jane Doe</h4>
+                                    <p class="text-sm text-[var(--accent-primary)] scramble-text">CEO, Cygnus Fintech</p>
+                                </div>
+                            </div>
+                             <div class="flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-4">
+                                <div class="bg-bg-primary/50 border border-border-color rounded-2xl p-8 h-full">
+                                    <p class="text-text-secondary mb-6 scramble-text">"Working with Abhi was a seamless experience. He understood our needs for the Aether Apparel site perfectly and delivered a design that was both beautiful and highly functional."</p>
+                                    <h4 class="font-bold text-text-primary scramble-text">John Smith</h4>
+                                    <p class="text-sm text-[var(--accent-primary)] scramble-text">Founder, Aether Apparel</p>
+                                </div>
+                            </div>
+                             <div class="flex-shrink-0 w-full md:w-1/2 lg:w-1/3 p-4">
+                                <div class="bg-bg-primary/50 border border-border-color rounded-2xl p-8 h-full">
+                                    <p class="text-text-secondary mb-6 scramble-text">"The Helios Dashboard UI kit is a game-changer for our team. It's intuitive, flexible, and has significantly sped up our development workflow. Highly recommended."</p>
+                                    <h4 class="font-bold text-text-primary scramble-text">Emily White</h4>
+                                    <p class="text-sm text-[var(--accent-primary)] scramble-text">Product Manager, SaaS Inc.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="testimonial-next-btn" class="absolute top-1/2 -right-4 md:right-0 transform -translate-y-1/2 bg-bg-primary/50 border border-border-color rounded-full p-3 text-text-secondary hover:text-text-primary z-10 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="py-24 lg:py-40">
+            <div class="container mx-auto px-6 max-w-3xl text-center">
+                <h2 class="text-4xl lg:text-5xl font-bold text-text-primary scroll-reveal scramble-text">Let's Build the Future.</h2>
+                <p class="text-lg text-text-secondary mt-4 mb-10 max-w-2xl mx-auto scroll-reveal scramble-text" style="transition-delay: 150ms;">
+                    Have an ambitious project? Need a creative partner to bring your vision to life? Fill out the form below or email me directly.
+                </p>
+                <form id="contact-form" class="space-y-6 scroll-reveal" style="transition-delay: 300ms;" novalidate>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <input type="text" id="name" name="name" placeholder="Your Name" required class="form-input w-full p-4 rounded-lg">
+                        <input type="email" id="email" name="email" placeholder="Your Email" required class="form-input w-full p-4 rounded-lg">
+                    </div>
+                    <div>
+                        <textarea id="message" name="message" placeholder="Your Message" rows="5" required class="form-input w-full p-4 rounded-lg"></textarea>
+                    </div>
+                    <div>
+                        <button type="submit" class="magnetic-element cta-button cta-shadow font-bold py-4 px-10 rounded-full text-lg transition-all duration-300 transform hover:scale-105 inline-block">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+                <div id="form-feedback" class="form-feedback mt-6 text-lg font-semibold opacity-0 transform -translate-y-2"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-black/50">
+        <div class="container mx-auto px-6 py-8 text-center text-slate-500">
+            <div class="mt-8 mb-4 flex justify-center space-x-6">
+                <a href="#" class="magnetic-element text-text-secondary hover:text-text-primary transition-colors">
+                    <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M16.9999 5.82843L5.82837 17L7.24258 18.4142L18.4141 7.24264V14H20.4141V4H10.4141V6H16.9999V5.82843Z"/></svg>
+                </a>
+                <a href="#" class="magnetic-element text-text-secondary hover:text-text-primary transition-colors">
+                    <svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.474 2.926 8.243 6.94 9.537.507.094.693-.22.693-.487 0-.24-.009-.875-.014-1.718-2.84.616-3.44-1.37-3.44-1.37-.462-1.175-1.128-1.488-1.128-1.488-.923-.63.07-.616.07-.616 1.02.072 1.556 1.047 1.556 1.047.906 1.552 2.375 1.104 2.953.844.092-.656.355-1.104.643-1.358-2.253-.256-4.62-1.128-4.62-5.013 0-1.108.395-2.015 1.047-2.724-.105-.257-.454-1.288.1-2.684 0 0 .85-.272 2.784 1.04.807-.224 1.674-.336 2.536-.34.862.004 1.73.116 2.537.34 1.933-1.312 2.783-1.04 2.783-1.04.554 1.396.205 2.427.1 2.684.652.71 1.045 1.616 1.045 2.724 0 3.896-2.37 4.754-4.632 5.004.365.314.69.936.69 1.884 0 1.358-.012 2.454-.012 2.787 0 .27.182.585.698.486C19.078 20.24 22 16.47 22 12c0-5.523-4.477-10-10-10Z"/></svg>
+                </a>
+                <a href="#" class="magnetic-element text-text-secondary hover:text-text-primary transition-colors">
+                     <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+            </div>
+            <p class="font-display text-lg scramble-text">Abhi Garg</p>
+            <p class="scramble-text">&copy; 2025. All Rights Reserved. Designed & Built with Passion.</p>
+        </div>
+    </footer>
+
+    <div id="portfolio-modal" class="modal-backdrop fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-[100] hidden opacity-0">
+        <div id="modal-content" class="modal-content bg-bg-card border border-border-color rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto transform scale-95 opacity-0">
+            <div class="p-6 md:p-8 relative">
+                <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors z-10 bg-bg-secondary rounded-full p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <div>
+                        <img id="modal-image" src="" alt="Project Image" class="w-full h-auto rounded-lg mb-4">
+                    </div>
+                    <div>
+                        <h2 id="modal-title" class="text-3xl md:text-4xl font-bold text-text-primary mb-4"></h2>
+                        <p id="modal-description" class="text-text-secondary text-lg"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <button id="theme-cycler-button" class="w-12 h-12 bg-bg-card border border-border-color rounded-full flex items-center justify-center text-text-secondary hover:text-text-primary focus:outline-none">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor"><path d="M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2ZM6,12a1,1,0,0,1,1-1H9.42a1,1,0,0,1,0,2H7A1,1,0,0,1,6,12Zm2.22,4.78a1,1,0,0,1,0-1.42,1,1,0,0,1,1.42,0,2.1,2.1,0,0,0,2.94,0,1,1,0,1,1,1.42,1.42,4.1,4.1,0,0,1-5.78,0ZM12,6.5A1.5,1.5,0,1,1,10.5,8,1.5,1.5,0,0,1,12,6.5Zm4,0A1.5,1.5,0,1,1,14.5,8,1.5,1.5,0,0,1,16,6.5Zm2.42,7H17a1,1,0,0,1,0-2h1.42a1,1,0,0,1,0,2Z"/></svg>
+    </button>
+    
+    <a href="#home" id="back-to-top" class="w-12 h-12 rounded-full flex items-center justify-center">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path></svg>
+    </a>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const docEl = document.documentElement;
+        const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+        // --- 0. PRELOADER ---
+        const preloader = document.getElementById('preloader');
+        window.addEventListener('load', () => {
+            preloader.classList.add('loaded');
+        });
+
+        // --- 1. THEME CYCLER ---
+        const themeCyclerBtn = document.getElementById('theme-cycler-button');
+        const themes = ['lime-dark', 'azure-dark', 'gold-dark', 'charcoal'];
+        let currentThemeIndex = 0;
+
+        const applyTheme = (theme) => {
+            docEl.setAttribute('data-theme', theme);
+            localStorage.setItem('portfolioTheme', theme);
+        };
+        
+        const savedTheme = localStorage.getItem('portfolioTheme');
+        if (savedTheme && themes.includes(savedTheme)) {
+            currentThemeIndex = themes.indexOf(savedTheme);
+            applyTheme(savedTheme);
+        } else {
+            applyTheme(themes[0]);
+        }
+
+        themeCyclerBtn.addEventListener('click', () => {
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            const newTheme = themes[currentThemeIndex];
+            applyTheme(newTheme);
+        });
+        
+        // --- 2. AURORA BACKGROUND ---
+        const auroraBg = document.getElementById('aurora-background');
+        if (auroraBg) {
+            window.addEventListener('mousemove', (e) => {
+                auroraBg.style.setProperty('--mouse-x', `${e.clientX}px`);
+                auroraBg.style.setProperty('--mouse-y', `${e.clientY}px`);
+                auroraBg.style.opacity = '0.3';
+            });
+        }
+        
+        // --- 3. CUSTOM CURSOR & MAGNETIC ELEMENTS ---
+        const cursor = document.getElementById('custom-cursor');
+        const magneticElements = document.querySelectorAll('.magnetic-element');
+        const magneticStrength = 0.4;
+
+        if (cursor && !isTouchDevice()) {
+            cursor.style.display = 'block';
+            window.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+            document.querySelectorAll('a, button, .project-card, .theme-toggle').forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+            });
+            document.querySelectorAll('.project-card').forEach(el => {
+                el.addEventListener('mouseenter', () => cursor.classList.add('text-hover'));
+                el.addEventListener('mouseleave', () => cursor.classList.remove('text-hover'));
+            });
+            magneticElements.forEach(el => {
+                el.addEventListener('mousemove', function(e) {
+                    const rect = this.getBoundingClientRect();
+                    const centerX = rect.left + rect.width / 2;
+                    const centerY = rect.top + rect.height / 2;
+                    const deltaX = (e.clientX - centerX) * magneticStrength;
+                    const deltaY = (e.clientY - centerY) * magneticStrength;
+                    this.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+                });
+                el.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translate(0, 0)';
+                });
+            });
+        }
+
+        // --- 4. HEADER & MOBILE MENU ---
+        const header = document.getElementById('main-header');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenuContainer = document.getElementById('mobile-menu-container');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('py-2', window.scrollY > 50);
+            header.classList.toggle('py-3', window.scrollY <= 50);
+        });
+        
+        const toggleMobileMenu = () => {
+             const isHidden = mobileMenu.style.transform === 'translateX(100%)' || mobileMenu.style.transform === '';
+             mobileMenu.style.transform = isHidden ? 'translateX(0)' : 'translateX(100%)';
+             mobileMenuOverlay.style.opacity = isHidden ? '1' : '0';
+             mobileMenuContainer.style.pointerEvents = isHidden ? 'auto' : 'none';
+        }
+        
+        mobileMenuButton.addEventListener('click', toggleMobileMenu);
+        mobileMenuOverlay.addEventListener('click', toggleMobileMenu);
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+             link.addEventListener('click', toggleMobileMenu);
+        });
+
+        // --- 5. SCROLL-TRIGGERED ANIMATIONS & NAV HIGHLIGHTING ---
+        const revealElements = document.querySelectorAll('.scroll-reveal');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section[id]');
+        const backToTopButton = document.getElementById('back-to-top');
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => revealObserver.observe(el));
+        
+        const navObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, { rootMargin: '-30% 0px -70% 0px' });
+        sections.forEach(section => navObserver.observe(section));
+
+        window.addEventListener('scroll', () => {
+            backToTopButton.classList.toggle('visible', window.scrollY > 400);
+        });
+        
+        // --- 6. TEXT SCRAMBLE EFFECT ---
+        class TextScrambler {
+            constructor(el) { this.el = el; this.chars = '!<>-_\\/[]{}—=+*^?#________'; this.update = this.update.bind(this); }
+            setText(newText) {
+                const oldText = this.el.innerText; const length = Math.max(oldText.length, newText.length);
+                const promise = new Promise((resolve) => this.resolve = resolve); this.queue = [];
+                for (let i = 0; i < length; i++) {
+                    const from = oldText[i] || ''; const to = newText[i] || ''; const start = Math.floor(Math.random() * 15);
+                    const end = start + Math.floor(Math.random() * 15); this.queue.push({ from, to, start, end });
+                }
+                cancelAnimationFrame(this.frameRequest); this.frame = 0; this.update(); return promise;
+            }
+            update() {
+                let output = ''; let complete = 0;
+                for (let i = 0, n = this.queue.length; i < n; i++) {
+                    let { from, to, start, end, char } = this.queue[i];
+                    if (this.frame >= end) { complete++; output += to; } 
+                    else if (this.frame >= start) {
+                        if (!char || Math.random() < 0.28) { char = this.randomChar(); this.queue[i].char = char; }
+                        output += `<span class="text-slate-500">${char}</span>`;
+                    } else { output += from; }
+                }
+                this.el.innerHTML = output;
+                if (complete === this.queue.length) { this.resolve(); } 
+                else { this.frameRequest = requestAnimationFrame(this.update); this.frame++; }
+            }
+            randomChar() { return this.chars[Math.floor(Math.random() * this.chars.length)]; }
+        }
+        const scrambleElements = document.querySelectorAll('.scramble-text');
+        scrambleElements.forEach(el => {
+            const scrambler = new TextScrambler(el);
+            const originalText = el.dataset.text || el.innerText;
+            const scrambleObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => scrambler.setText(originalText), 300);
+                        scrambleObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.5 });
+            scrambleObserver.observe(el);
+        });
+        
+        // --- 8. TESTIMONIALS SLIDER ---
+        const track = document.getElementById('testimonial-track');
+        if (track) {
+            const testimonials = Array.from(track.children);
+            if (testimonials.length > 0) {
+                const slideWidth = testimonials[0].getBoundingClientRect().width;
+                track.append(...testimonials.map(t => t.cloneNode(true)));
+                let currentIndex = 0; 
+                let autoPlayInterval;
+
+                const showSlide = (index) => {
+                    track.style.transition = 'transform 0.5s var(--ease-in-out-cubic)';
+                    track.style.transform = `translateX(-${index * slideWidth}px)`;
+                };
+
+                const nextSlide = () => {
+                    currentIndex++; 
+                    showSlide(currentIndex);
+                    if (currentIndex >= testimonials.length) {
+                        setTimeout(() => {
+                            track.style.transition = 'none'; 
+                            currentIndex = 0; 
+                            showSlide(currentIndex);
+                        }, 500);
+                    }
+                };
+                
+                const startAutoPlay = () => {
+                    autoPlayInterval = setInterval(nextSlide, 5000);
+                };
+
+                startAutoPlay();
+                
+                const nextBtn = document.getElementById('testimonial-next-btn');
+                if (nextBtn) {
+                    nextBtn.addEventListener('click', () => {
+                        nextSlide();
+                        clearInterval(autoPlayInterval);
+                        startAutoPlay();
+                    });
+                }
+            }
+        }
+        
+        // --- 9. AJAX CONTACT FORM ---
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzM_G7YB8KTpkACRcgVbNSbuSbAOgiH88P1sANbqOU_TQGkwYrsvheXHj8mwKdr3sTR/exec';
+        const form = document.getElementById('contact-form');
+        const formFeedback = document.getElementById('form-feedback');
+        const submitButton = form.querySelector('button[type="submit"]');
+
+        function showFeedback(message, colorClass) {
+            formFeedback.textContent = message; 
+            formFeedback.className = `form-feedback mt-6 text-lg font-semibold opacity-0 transform -translate-y-2 ${colorClass}`;
+            setTimeout(() => { 
+                formFeedback.classList.remove('opacity-0', '-translate-y-2'); 
+                formFeedback.classList.add('opacity-100', 'translate-y-0'); 
+            }, 10);
+        }
+        
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            if (!form.elements.name.value || !form.elements.email.value || !form.elements.message.value) {
+                showFeedback('Please fill out all fields.', 'text-red-400');
+                return;
+            }
+            
+            const originalButtonText = submitButton.textContent;
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+            showFeedback('Sending message...', 'text-[var(--accent-secondary)]');
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+                .then(response => {
+                    if (response.ok) {
+                        showFeedback('Thank you! Your message has been sent.', 'text-green-400');
+                        form.reset();
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error!', error.message);
+                    showFeedback('Error sending message. Please try again.', 'text-red-400');
+                })
+                .finally(() => {
+                    submitButton.disabled = false;
+                    submitButton.textContent = originalButtonText;
+                });
+        });
+
+    }); // End DOMContentLoaded
+    
+    // --- PORTFOLIO MODAL LOGIC (Global Scope) ---
+    const modal = document.getElementById('portfolio-modal');
+    const modalContent = document.getElementById('modal-content');
+    const modalTitle = document.getElementById('modal-title');
+    const modalImage = document.getElementById('modal-image');
+    const modalDescription = document.getElementById('modal-description');
+    function openModal(title, imageUrl, description) {
+        modalTitle.textContent = title; 
+        modalImage.src = imageUrl; 
+        modalDescription.textContent = description;
+        modal.classList.remove('hidden'); 
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => {
+            modal.classList.remove('opacity-0');
+            modalContent.classList.remove('scale-95', 'opacity-0');
+        }, 10);
+    }
+    function closeModal() {
+        modal.classList.add('opacity-0'); 
+        modalContent.classList.add('scale-95', 'opacity-0');
+        document.body.style.overflow = '';
+        setTimeout(() => { modal.classList.add('hidden'); }, 300);
+    }
+    modal.addEventListener('click', (event) => { if (event.target === modal) { closeModal(); } });
+    document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !modal.classList.contains('hidden')) { closeModal(); } });
+    </script>
+</body>
+</html>
